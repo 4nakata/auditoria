@@ -13,6 +13,7 @@ import {
   CNavLink,
   CNavItem,
   useColorModes,
+  CHeaderBrand,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -27,13 +28,15 @@ import {
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import { setSidebarShow } from '../store/slices/uiSlice'
+import logo from '../assets/logo.png'
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const sidebarShow = useSelector((state) => state.ui.sidebarShow)
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -46,27 +49,23 @@ const AppHeader = () => {
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
       <CContainer className="border-bottom px-4" fluid>
         <CHeaderToggler
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
-          style={{ marginInlineStart: '-14px' }}
+          className="ps-1"
+          onClick={() => dispatch(setSidebarShow(!sidebarShow))}
         >
-          <CIcon icon={cilMenu} size="lg" />
+          <span className="navbar-toggler-icon"></span>
         </CHeaderToggler>
+        <CHeaderBrand className="mx-auto d-md-none" to="/">
+          <CIcon icon={logo} height={48} alt="Logo" />
+        </CHeaderBrand>
 
-        <CHeaderNav className="ms-auto">
+        <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
+            <CNavLink to="/dashboard" component={NavLink}>
+              Dashboard
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
+            <CNavLink href="#">Auditoflows</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav>

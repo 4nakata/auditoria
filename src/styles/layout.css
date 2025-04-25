@@ -1,0 +1,16 @@
+.app-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.wrapper {
+  flex: 1;
+  margin-left: 256px; /* Width of the sidebar */
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    margin-left: 0;
+  }
+} 
