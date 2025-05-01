@@ -9,9 +9,9 @@ import AppLayout from './layout/AppLayout'
 import Loader from './components/Loader'
 
 // Pages
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Auditorias = React.lazy(() => import('./views/auditorias/Auditorias'))
-const Auditores = React.lazy(() => import('./views/auditores/Auditores'))
+const Dashboard = React.lazy(() => import('./views/seminario/dashboard/Dashboard'))
+const Auditorias = React.lazy(() => import('./views/seminario/auditorias/Auditorias'))
+const Auditores = React.lazy(() => import('./views/seminario/auditores/Auditores'))
 const Tasks = React.lazy(() => import('./views/seminario/tareas/Tasks'))
 
 const AppRoutes = () => {

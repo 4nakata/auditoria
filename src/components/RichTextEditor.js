@@ -2,25 +2,37 @@ import React, { useRef, useEffect } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 
-const RichTextEditor = ({ value, onChange, placeholder = 'Escribe aquí...', height = '300px' }) => {
+const RichTextEditor = ({
+  value,
+  onChange,
+  placeholder = 'Escribe aquí...',
+  height = '200px',
+  label,
+}) => {
   const editorRef = useRef(null)
   const quillRef = useRef(null)
 
   useEffect(() => {
-    if (editorRef.current && !quillRef.current) {
+    // Clean up any previous Quill instance and DOM
+    if (editorRef.current) {
+      editorRef.current.innerHTML = ''
+    }
+    quillRef.current = null
+
+    // Initialize Quill
+    if (editorRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: 'snow',
-        placeholder: placeholder,
+        placeholder,
         modules: {
           toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'color': [] }, { 'background': [] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ color: [] }],
             ['link', 'image'],
-            ['clean']
-          ]
-        }
+            ['clean'],
+          ],
+        },
       })
 
       // Set initial content
@@ -38,11 +50,27 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Escribe aquí...', hei
       })
     }
 
+    // Cleanup: remove Quill and its toolbar
     return () => {
       if (quillRef.current) {
+        quillRef.current.off('text-change')
         quillRef.current = null
       }
+      if (editorRef.current) {
+        // Remove all children (including toolbar)
+        while (editorRef.current.firstChild) {
+          editorRef.current.removeChild(editorRef.current.firstChild)
+        }
+      }
+      // Remove any toolbar that Quill may have injected outside the editorRef
+      const toolbars = document.querySelectorAll('.ql-toolbar');
+      toolbars.forEach(toolbar => {
+        if (toolbar.parentNode) {
+          toolbar.parentNode.removeChild(toolbar)
+        }
+      })
     }
+    // eslint-disable-next-line
   }, [])
 
   // Update content when value prop changes
@@ -53,8 +81,11 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Escribe aquí...', hei
   }, [value])
 
   return (
-    <div className="border rounded bg-white">
-      <div ref={editorRef} style={{ marginBottom: '50px' }} />
+    <div>
+      {label && <label className="form-label">{label}</label>}
+      <div className="border rounded bg-white">
+        <div ref={editorRef} />
+      </div>
     </div>
   )
 }

@@ -1,69 +1,68 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
-  CCard,
-  CCardBody,
-  CCardHeader,
   CCol,
   CRow,
-  CButton,
   CBadge,
   CListGroup,
   CListGroupItem,
 } from '@coreui/react'
-import { CIcon } from '@coreui/icons-react'
-import { cilArrowLeft } from '@coreui/icons'
+import DetailViewLayout from '../../../components/DetailViewLayout'
 
 const AuditorDetails = ({ auditor, onBack }) => {
+  const getStatusBadge = (status) => {
+    return status === 'Activo' ? 'success' : 'danger'
+  }
+
   return (
-    <CRow>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader className="d-flex justify-content-between align-items-center">
-            <div>
-              <CButton color="link" onClick={onBack} className="p-0 me-2">
-                <CIcon icon={cilArrowLeft} />
-              </CButton>
-              <strong>Detalles del Auditor</strong>
-            </div>
-          </CCardHeader>
-          <CCardBody>
-            <CRow>
-              <CCol xs={12} md={6}>
-                <CListGroup>
-                  <CListGroupItem>
-                    <strong>Nombre:</strong> {auditor.name}
-                  </CListGroupItem>
-                  <CListGroupItem>
-                    <strong>Email:</strong> {auditor.email}
-                  </CListGroupItem>
-                  <CListGroupItem>
-                    <strong>Estado:</strong>{' '}
-                    <CBadge color={auditor.status === 'Activo' ? 'success' : 'danger'}>
-                      {auditor.status}
-                    </CBadge>
-                  </CListGroupItem>
-                </CListGroup>
-              </CCol>
-              <CCol xs={12} md={6}>
-                <CListGroup>
-                  <CListGroupItem>
-                    <strong>Tipos de Auditoría:</strong>
-                    <div className="mt-2">
-                      {auditor.auditorTypes.map((type) => (
-                        <CBadge key={type} color="info" className="me-1">
-                          {type}
-                        </CBadge>
-                      ))}
-                    </div>
-                  </CListGroupItem>
-                </CListGroup>
-              </CCol>
-            </CRow>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
+    <DetailViewLayout
+      title={auditor.name}
+      subtitle={auditor.email}
+      status={{
+        text: auditor.status,
+        color: getStatusBadge(auditor.status),
+      }}
+      onBack={onBack}
+    >
+      <CRow>
+        <CCol md={6}>
+          <CListGroup>
+            <CListGroupItem className="d-flex justify-content-between align-items-center">
+              Estado
+              <CBadge color={getStatusBadge(auditor.status)}>{auditor.status}</CBadge>
+            </CListGroupItem>
+            <CListGroupItem>
+              <strong>Email:</strong> {auditor.email}
+            </CListGroupItem>
+          </CListGroup>
+        </CCol>
+        <CCol md={6}>
+          <CListGroup>
+            <CListGroupItem>
+              <strong>Tipos de Auditoría:</strong>
+              <div className="mt-2">
+                {auditor.auditorTypes.map((type, index) => (
+                  <CBadge key={index} color="info" className="me-1">
+                    {type}
+                  </CBadge>
+                ))}
+              </div>
+            </CListGroupItem>
+          </CListGroup>
+        </CCol>
+      </CRow>
+    </DetailViewLayout>
   )
+}
+
+AuditorDetails.propTypes = {
+  auditor: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    auditorTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+  onBack: PropTypes.func.isRequired,
 }
 
 export default AuditorDetails 

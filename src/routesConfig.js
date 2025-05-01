@@ -2,10 +2,10 @@ import React from 'react'
 import { lazy } from 'react'
 
 // Pages
-const Dashboard = lazy(() => import('./views/dashboard/Dashboard'))
-const Auditores = lazy(() => import('./views/auditores/Auditores'))
+const Dashboard = lazy(() => import('./views/seminario/dashboard/Dashboard'))
+const Auditores = lazy(() => import('./views/seminario/auditores/Auditores'))
 const Tasks = lazy(() => import('./views/seminario/tareas/Tasks'))
-const Configuracion = lazy(() => import('./views/configuracion/Configuracion'))
+const Auditorias = lazy(() => import('./views/seminario/auditorias/Auditorias'))
 
 const routes = [
   {
@@ -27,9 +27,9 @@ const routes = [
     exact: true,
   },
   {
-    path: '/configuracion',
-    name: 'Configuración',
-    element: Configuracion,
+    path: '/auditorias',
+    name: 'Auditorías',
+    element: Auditorias,
     exact: true,
   },
 ]

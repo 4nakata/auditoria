@@ -16,6 +16,7 @@ import { CIcon } from '@coreui/icons-react'
 import { cilArrowLeft } from '@coreui/icons'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
+import RichTextEditor from '../../../components/RichTextEditor'
 
 const AddTask = ({ onBack, onAddTask }) => {
   const [formData, setFormData] = useState({
@@ -31,6 +32,10 @@ const AddTask = ({ onBack, onAddTask }) => {
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+  }
+
+  const handleDescriptionChange = (value) => {
+    setFormData({ ...formData, description: value })
   }
 
   const handleProgressChange = (value) => {
@@ -132,12 +137,10 @@ const AddTask = ({ onBack, onAddTask }) => {
               </CRow>
               <CRow className="mb-3">
                 <CCol>
-                  <CFormTextarea
-                    name="description"
+                  <RichTextEditor
                     label="Descripción"
                     value={formData.description}
-                    onChange={handleChange}
-                    rows={4}
+                    onChange={handleDescriptionChange}
                     required
                   />
                 </CCol>

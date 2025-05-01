@@ -16,6 +16,7 @@ import { CIcon } from '@coreui/icons-react'
 import { cilArrowLeft } from '@coreui/icons'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
+import RichTextEditor from '../../../components/RichTextEditor'
 
 const EditTask = ({ task, onBack, onUpdateTask }) => {
   const [formData, setFormData] = useState({
@@ -35,6 +36,10 @@ const EditTask = ({ task, onBack, onUpdateTask }) => {
 
   const handleProgressChange = (value) => {
     setFormData({ ...formData, progress: value })
+  }
+
+  const handleProgressCommentChange = (value) => {
+    setFormData({ ...formData, progressComment: value })
   }
 
   const handleSubmit = (e) => {
@@ -144,12 +149,10 @@ const EditTask = ({ task, onBack, onUpdateTask }) => {
               </CRow>
               <CRow className="mb-3">
                 <CCol>
-                  <CFormTextarea
-                    name="progressComment"
+                  <RichTextEditor
                     label="Comentario de Progreso"
                     value={formData.progressComment}
-                    onChange={handleChange}
-                    rows={2}
+                    onChange={handleProgressCommentChange}
                   />
                 </CCol>
               </CRow>

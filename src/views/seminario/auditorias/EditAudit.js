@@ -5,41 +5,37 @@ import {
   CCardHeader,
   CCol,
   CRow,
-  CButton,
   CForm,
   CFormInput,
-  CFormTextarea,
   CFormSelect,
+  CButton,
+  CFormLabel,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import { CIcon } from '@coreui/icons-react'
 import { cilArrowLeft } from '@coreui/icons'
 
-const EditAudit = ({ audit, onBack, onSave }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    startDate: '',
-    endDate: '',
-    status: 'pending',
-    description: '',
+const EditAudit = ({ audit, onBack, onUpdateAudit }) => {
+  const [editedAudit, setEditedAudit] = useState({
+    ...audit,
   })
 
   useEffect(() => {
-    if (audit) {
-      setFormData(audit)
-    }
+    setEditedAudit({
+      ...audit,
+    })
   }, [audit])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onSave(formData)
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setEditedAudit((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onUpdateAudit(editedAudit)
   }
 
   return (
@@ -47,90 +43,112 @@ const EditAudit = ({ audit, onBack, onSave }) => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader className="d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center">
-              <CButton 
-                color="link" 
-                className="p-0 me-3"
-                onClick={onBack}
-              >
-                <CIcon icon={cilArrowLeft} size="lg" />
-              </CButton>
-              <strong>{audit ? 'Editar' : 'Nueva'} Auditoría</strong>
+            <div>
+              <h5 className="mb-1">Editar Auditoría</h5>
+              <span className="text-medium-emphasis">{editedAudit.name}</span>
             </div>
+            <CButton color="secondary" onClick={onBack}>
+              <CIcon icon={cilArrowLeft} className="me-2" />
+              Volver
+            </CButton>
           </CCardHeader>
           <CCardBody>
             <CForm onSubmit={handleSubmit}>
               <CRow className="mb-3">
-                <CCol md={6}>
+                <CCol>
+                  <CFormLabel>Nombre de la Auditoría</CFormLabel>
                   <CFormInput
                     type="text"
-                    id="name"
                     name="name"
-                    label="Nombre"
-                    value={formData.name}
+                    value={editedAudit.name}
                     onChange={handleChange}
                     required
                   />
                 </CCol>
-                <CCol md={6}>
+              </CRow>
+
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel>Tipo de Auditoría</CFormLabel>
                   <CFormSelect
-                    id="status"
+                    name="type"
+                    value={editedAudit.type}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="ISO27001">ISO 27001</option>
+                    <option value="ISO9001">ISO 9001</option>
+                    <option value="ISO14001">ISO 14001</option>
+                    <option value="SOX">SOX</option>
+                    <option value="PCI-DSS">PCI-DSS</option>
+                    <option value="GDPR">GDPR</option>
+                  </CFormSelect>
+                </CCol>
+              </CRow>
+
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel>Estado</CFormLabel>
+                  <CFormSelect
                     name="status"
-                    label="Estado"
-                    value={formData.status}
+                    value={editedAudit.status}
                     onChange={handleChange}
-                    options={[
-                      { label: 'Pendiente', value: 'pending' },
-                      { label: 'En Proceso', value: 'in_progress' },
-                      { label: 'Completada', value: 'completed' },
-                      { label: 'Cancelada', value: 'cancelled' },
-                    ]}
-                  />
+                    required
+                  >
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En Progreso">En Progreso</option>
+                    <option value="Completada">Completada</option>
+                    <option value="Cancelada">Cancelada</option>
+                  </CFormSelect>
                 </CCol>
               </CRow>
+
               <CRow className="mb-3">
-                <CCol md={6}>
+                <CCol>
+                  <CFormLabel>Auditor</CFormLabel>
+                  <CFormSelect
+                    name="auditor"
+                    value={editedAudit.auditor}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="Juan Pérez">Juan Pérez</option>
+                    <option value="María García">María García</option>
+                    <option value="Carlos López">Carlos López</option>
+                  </CFormSelect>
+                </CCol>
+              </CRow>
+
+              <CRow className="mb-3">
+                <CCol>
+                  <CFormLabel>Fecha de Inicio</CFormLabel>
                   <CFormInput
                     type="date"
-                    id="startDate"
                     name="startDate"
-                    label="Fecha de Inicio"
-                    value={formData.startDate}
+                    value={editedAudit.startDate}
                     onChange={handleChange}
                     required
                   />
                 </CCol>
-                <CCol md={6}>
+                <CCol>
+                  <CFormLabel>Fecha de Fin</CFormLabel>
                   <CFormInput
                     type="date"
-                    id="endDate"
                     name="endDate"
-                    label="Fecha de Fin"
-                    value={formData.endDate}
+                    value={editedAudit.endDate}
                     onChange={handleChange}
                     required
                   />
                 </CCol>
               </CRow>
-              <CRow className="mb-3">
-                <CCol xs={12}>
-                  <CFormTextarea
-                    id="description"
-                    name="description"
-                    label="Descripción"
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows={4}
-                  />
-                </CCol>
-              </CRow>
+
               <CRow>
-                <CCol xs={12} className="text-end">
-                  <CButton color="secondary" className="me-2" onClick={onBack}>
+                <CCol className="d-flex justify-content-end gap-2">
+                  <CButton color="secondary" onClick={onBack}>
                     Cancelar
                   </CButton>
-                  <CButton color="primary" type="submit">
-                    Guardar
+                  <CButton type="submit" color="primary">
+                    Guardar Cambios
                   </CButton>
                 </CCol>
               </CRow>
