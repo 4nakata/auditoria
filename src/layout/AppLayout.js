@@ -1,8 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { CContainer } from '@coreui/react'
-import AppHeader from './AppHeader'
-import AppSidebar from './AppSidebar'
+import AppHeader from '../components/AppHeader'
+import AppSidebar from '../components/AppSidebar'
 import AppFooter from '../components/AppFooter'
 
 const AppLayout = () => {

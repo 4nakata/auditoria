@@ -29,7 +29,7 @@ import {
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { setSidebarShow } from '../store/slices/uiSlice'
-import logo from '../assets/logo.png'
+import { logo } from '../assets/brand/logo'
 
 const AppHeader = () => {
   const headerRef = useRef()

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleSidebar } from '../store/slices/uiSlice'
+import { setSidebarShow } from '../store/slices/uiSlice'
 import { CSidebar, CSidebarNav, CSidebarToggler } from '@coreui/react'
 import { AppSidebarNav } from './AppSidebarNav'
 import navigation from '../_nav'
@@ -14,9 +14,6 @@ const AppSidebar = () => {
       position="fixed"
       unfoldable={false}
       visible={sidebarShow}
-      onVisibleChange={(visible) => {
-        dispatch(toggleSidebar())
-      }}
       className="border-end"
     >
       <CSidebarNav>
@@ -24,7 +21,7 @@ const AppSidebar = () => {
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
-        onClick={() => dispatch(toggleSidebar())}
+        onClick={() => dispatch(setSidebarShow(!sidebarShow))}
       />
     </CSidebar>
   )
